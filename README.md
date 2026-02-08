@@ -1,147 +1,224 @@
-## Code Repository
-Full reproducible code and outputs are available here:
-https://github.com/KojoOkyere/hdl-noise-robust-prediction
-
 # Robust Prediction of HDL Cholesterol Under Noise-Perturbed Outcomes
+### NHANES Application — Prediction Track (Graduate)
 
-This repository contains the full code and reproducible pipeline for the graduate-track
-submission to the ASASF/NHANES Prediction Challenge.
+[![R](https://img.shields.io/badge/Made%20with-R-blue.svg)](https://www.r-project.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Reproducible](https://img.shields.io/badge/Reproducible-Yes-success.svg)](#reproducibility)
 
-The project evaluates the robustness of statistical and machine learning models
-for predicting HDL cholesterol under realistic outcome perturbations.
+---
 
-## Project Overview
+## Overview
 
-High-density lipoprotein cholesterol (HDL-C) is an important biomarker for
-cardiovascular risk. In population surveys such as NHANES, outcome measurements
-may be affected by random noise arising from laboratory variability, reporting
-errors, and privacy-preserving mechanisms.
+This repository contains the complete analytical pipeline for the competition submission:
 
-This project investigates how different predictive models degrade under
-increasing levels of synthetic outcome noise and identifies methods that remain
-stable and reliable.
+**"Robust Prediction of HDL Cholesterol Under Noise-Perturbed Outcomes: An NHANES Application"**
 
-## Data
+The project evaluates the robustness, stability, and predictive accuracy of multiple statistical and machine learning models under controlled outcome perturbation.
 
-- Source: NHANES-derived ASASF dataset
-- Training size: 1,000 observations
-- Test size: 200 observations
-- Predictors: Anthropometric, demographic, and dietary variables
+Our analysis goes beyond leaderboard optimization by emphasizing:
+
+- Predictive robustness
+- Feature stability
+- Interpretability
+- Reproducibility
+
+under realistic measurement noise.
+
+---
+
+## Competition Track
+
+**Track:** Prediction Track (Graduate)  
+**Task:** Predict `LBDHDD_outcome` for the test dataset  
+**Primary Metric:** Root Mean Squared Error (RMSE)
+
+Secondary evaluation emphasizes report quality, clarity, and rigor.
+
+---
+
+## Data Description
+
+- Source: NHANES (CDC Public Use Files)
 - Outcome: `LBDHDD_outcome` (HDL cholesterol, mg/dL)
+- Sample Size: ~1,200
+- Predictors: 97 demographic, dietary, and anthropometric variables
 
-Note: Raw data are not redistributed due to competition policies.
+---
 
-## Methods
+## Preprocessing Pipeline
 
-### Preprocessing
-- Median imputation for continuous variables
-- Mode imputation for categorical variables
-- One-hot encoding
-- Z-score normalization
+1. Missing values:
+   - Continuous → Median imputation
+   - Categorical → Mode imputation
 
-### Models
-- Ordinary Least Squares (OLS)
-- Ridge Regression
-- Lasso Regression
-- Elastic Net (α = 0.9)
-- Random Forest
-- XGBoost
+2. Feature encoding:
+   - One-hot encoding for categorical variables
+
+3. Scaling:
+   - Standardization (mean 0, variance 1)
+
+4. Feature engineering:
+   - Removal of near-zero variance predictors
+   - Consistent encoding across train/test sets
+
+---
 
 ## Outcome Noise Design
-To evaluate model robustness under measurement error and privacy-style perturbations, synthetic Gaussian noise was added to the outcome variable.
-For each noise level σ, the perturbed outcome was generated as:
 
-Y(σ) = Y + ε,   where ε ~ N(0, σ²)
+To evaluate robustness under realistic measurement error and privacy-style perturbations, synthetic Gaussian noise was added to the outcome variable.
 
-The following noise levels were considered:
+For each noise level σ:
+Y(σ) = Y + ε, where ε ~ N(0, σ²)
 
+Noise levels considered:
 σ ∈ {0, 0.5, 1, 2, 3, 5}
 
-These values represent increasing degrees of outcome uncertainty, ranging from no perturbation (σ = 0) to severe noise contamination (σ = 5). This enables systematic evaluation of predictive performance degradation and robustness.
 
-```
+This design enables systematic analysis of performance degradation under increasing outcome distortion.
 
-### Validation
-- Fixed 10-fold cross-validation
-- Baseline tuning at σ = 0
-- Out-of-fold evaluation under noise
+---
 
-### Metrics
-- RMSE (primary competition metric)
-- MAE
-- R²
+## Models Evaluated
 
-## Feature Stability
+The following models were implemented and compared:
 
-Elastic Net models are evaluated using bootstrap resampling to assess:
+| Category | Models |
+|----------|---------|
+| Linear | OLS |
+| Regularized | Ridge, Lasso, Elastic Net |
+| Ensemble | Random Forest, XGBoost |
+
+Key libraries:
+- `glmnet`
+- `randomForest`
+- `xgboost`
+- `tidymodels`
+
+---
+
+## Validation & Tuning Strategy
+
+- Repeated K-fold cross-validation
+- Nested tuning at baseline (σ = 0)
+- Fixed hyperparameters across noise levels
+- Out-of-fold (OOF) evaluation
+
+### Performance Metrics
+
+| Metric | Purpose |
+|--------|----------|
+| RMSE | Primary ranking metric |
+| MAE | Robust error measure |
+| R² | Explained variance |
+
+---
+
+## Feature Stability Analysis
+
+Elastic Net models were evaluated using bootstrap resampling.
+
+Stability metrics include:
 
 - Selection frequency
 - Sign consistency
 - Coefficient variability
+- Aggregated stability score
 
-A composite stability score is used to rank predictors.
+This identifies predictors with consistent associations under perturbation.
+
+---
 
 ## Final Model
 
-XGBoost was selected as the final model based on:
+Based on predictive accuracy and robustness:
 
-- Best baseline performance
-- Strong robustness under noise
-- Consistent generalization
+**Selected Model:** XGBoost
 
-This model was trained on the full training set and used to generate test
-predictions.
+Rationale:
+- Lowest baseline RMSE
+- Most stable degradation
+- Strong nonlinear modeling capacity
 
-## Reproducibility and Usage
-
-This repository contains the complete pipeline for data preprocessing,
-model training, validation, and prediction generation.
-
-### Requirements
-- R (version ≥ 4.2)
-- Required packages:
-  tidyverse, glmnet, randomForest, xgboost, caret, Matrix
-
-Install dependencies in R:
-
-```r
-install.packages(c(
-  "tidyverse", "glmnet", "randomForest",
-  "xgboost", "caret", "Matrix"
-))
 ---
 
-2. Run the main script:
+## Repository Structure
+hdl-noise-robust-prediction/
+│
+├── analysis/
+│ └── main_pipeline.R
+│
+├── data/
+│ ├── train.csv
+│ └── test.csv
+│
+├── output/
+│ └── pred.csv
+│
+├── figures/
+│ └── Fig1.png
+│
+├── tables/
+│ └── performance_metrics.csv
+│
+└── README.md
+
+
+---
+
+## How to Reproduce Results
+### Clone Repository
+
+```bash
+git clone https://github.com/KojoOkyere/hdl-noise-robust-prediction.git
+cd hdl-noise-robust-prediction
+
+## Install Dependencies
+In R:
+install.packages(c(
+  "tidyverse", "glmnet", "randomForest",
+  "xgboost", "caret", "rsample", "yardstick"
+))
+
+## Run Main Pipeline
+From project root:
 ```r
 source("main_pipeline.R")
 ```
+This script performs:
+- Data preprocessing
+- Cross-validation
+- Noise perturbation
+- Model training Evaluation
+- Test prediction generation
 
-3. Outputs will be saved in:
-- output/
-- figures/
-- tables/
+## Outputs
+Results are saved in:
+output/   → pred.csv
+figures/  → figures
+tables/   → performance tables
 
 ## Submission File
-The file pred.csv satisfies competition requirements:
-- One column: pred
-- Correct ordering
-- Matches test set length
-- 
-## Reproducibility
-- Fixed random seed: 2026
-- Fixed cross-validation folds
-- Fully scripted pipeline
-- All results reproducible
+The final submission file:
+output/pred.csv
+
+Format:
+Exactly one column: pred
+Row order matches test set
+
+## Reproducibility Statement
+All analyses were conducted using a fully reproducible workflow with fixed random seeds and documented dependencies. The complete data preprocessing, model training, validation, and prediction pipeline is publicly available in this repository, enabling independent verification and replication of results.
 
 ## Citation
 If you use this work, please cite:
-Okyere, F. (2026). Robust Prediction of HDL Cholesterol Under Noise-Perturbed Outcomes.
+Citation
+Okyere, F. (2026). Robust Prediction of HDL Cholesterol Under Noise-Perturbed Outcomes: An NHANES Application.
+Competition Submission.
 
 ## Author
 Francis Okyere
-Department of Statistics
+M.S. Statistics (Applied Statistics)
 Florida State University
-Email: [kokyere.gh@gmail.com]
+Email: fokyere@fsu.edu
 
 ## License
 This project is licensed under the MIT License.
