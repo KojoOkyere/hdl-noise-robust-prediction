@@ -1,3 +1,7 @@
+## Code Repository
+Full reproducible code and outputs are available here:
+https://github.com/KojoOkyere/hdl-noise-robust-prediction
+
 # Robust Prediction of HDL Cholesterol Under Noise-Perturbed Outcomes
 
 This repository contains the full code and reproducible pipeline for the graduate-track
