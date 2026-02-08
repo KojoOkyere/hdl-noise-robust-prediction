@@ -47,14 +47,18 @@ Note: Raw data are not redistributed due to competition policies.
 - Random Forest
 - XGBoost
 
-### Noise Design
-Synthetic Gaussian noise is added to the outcome:
-```r
-\[
-Y^{(\sigma)} = Y + \epsilon, \quad \epsilon \sim N(0, \sigma^2)
-\]
+## Outcome Noise Design
+To evaluate model robustness under measurement error and privacy-style perturbations, synthetic Gaussian noise was added to the outcome variable.
+For each noise level σ, the perturbed outcome was generated as:
 
-with σ ∈ {0, 0.5, 1, 2, 3, 5}.
+Y(σ) = Y + ε,   where ε ~ N(0, σ²)
+
+The following noise levels were considered:
+
+σ ∈ {0, 0.5, 1, 2, 3, 5}
+
+These values represent increasing degrees of outcome uncertainty, ranging from no perturbation (σ = 0) to severe noise contamination (σ = 5). This enables systematic evaluation of predictive performance degradation and robustness.
+
 ```
 
 ### Validation
