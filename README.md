@@ -101,3 +101,36 @@ hdl-noise-robust-prediction/
 ├── README.md
 └── LICENSE
 ---
+
+2. Run the main script:
+source("analysis/main_pipeline.R")
+
+3. Outputs will be saved in:
+- output/
+- figures/
+- tables/
+
+## Submission File
+The file pred.csv satisfies competition requirements:
+- One column: pred
+- Correct ordering
+- Matches test set length
+- 
+## Reproducibility
+- Fixed random seed: 2026
+- Fixed cross-validation folds
+- Fully scripted pipeline
+- All results reproducible
+
+## Citation
+If you use this work, please cite:
+Okyere, F. (2026). Robust Prediction of HDL Cholesterol Under Noise-Perturbed Outcomes.
+
+## Author
+Francis Okyere
+Department of Statistics
+Florida State University
+Email: [kokyere.gh@gmail.com]
+
+## License
+This project is licensed under the MIT License.
