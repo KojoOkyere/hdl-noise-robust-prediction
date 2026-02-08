@@ -1,6 +1,6 @@
 # ==============================================================
-# Robust Prediction of HDL Cholesterol Under Noise-Perturbed Outcomes
-# (NHANES-based ASASF data)
+#  Robust and Reproducible Prediction of HDL Cholesterol Under Outcome Perturbation:
+# (An NHANES Machine Learning)
 #
 # FULL END-TO-END R PIPELINE (ROBUST-NOISE TOPIC)
 # - Public TEST set is UNLABELED (no LBDHDD_outcome)
@@ -691,3 +691,4 @@ message("Tables:   ", path(root_dir, "tables"))
 message("Figures:  ", path(root_dir, "figures"))
 message("RDS:      ", path(root_dir, "rds"))
 message("Blind test predictions saved: tables/blind_test_predictions_all_models.csv")
+
