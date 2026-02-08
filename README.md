@@ -49,12 +49,13 @@ Note: Raw data are not redistributed due to competition policies.
 
 ### Noise Design
 Synthetic Gaussian noise is added to the outcome:
-
+```r
 \[
 Y^{(\sigma)} = Y + \epsilon, \quad \epsilon \sim N(0, \sigma^2)
 \]
 
 with σ ∈ {0, 0.5, 1, 2, 3, 5}.
+```
 
 ### Validation
 - Fixed 10-fold cross-validation
@@ -87,27 +88,29 @@ XGBoost was selected as the final model based on:
 This model was trained on the full training set and used to generate test
 predictions.
 
-## Repository Structure
-hdl-noise-robust-prediction/
-│
-├── analysis/
-│ └── main_pipeline.R
-│
-├── figures/
-│ └── Figures1to5.png
-│
-├── output/
-│ └── pred.csv
-│
-├── report/
-│ └── competition_report.pdf
-│
-├── README.md
-└── LICENSE
+## Reproducibility and Usage
+
+This repository contains the complete pipeline for data preprocessing,
+model training, validation, and prediction generation.
+
+### Requirements
+- R (version ≥ 4.2)
+- Required packages:
+  tidyverse, glmnet, randomForest, xgboost, caret, Matrix
+
+Install dependencies in R:
+
+```r
+install.packages(c(
+  "tidyverse", "glmnet", "randomForest",
+  "xgboost", "caret", "Matrix"
+))
 ---
 
 2. Run the main script:
-source("analysis/main_pipeline.R")
+```r
+source("main_pipeline.R")
+```
 
 3. Outputs will be saved in:
 - output/
